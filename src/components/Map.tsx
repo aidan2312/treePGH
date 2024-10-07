@@ -7,6 +7,7 @@ import Basemap from "@arcgis/core/Basemap";
 import GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import Search from "@arcgis/core/widgets/Search";
+import { CalciteLoader } from "@esri/calcite-components-react";
 
 interface MapFrameProps {
     center?: [number, number];
@@ -20,6 +21,8 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
     const mapRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<MapView | null>(null);
     const [error, setError] = useState<string | null>(null);
+    const [layersLoading, setLayersLoading] = useState<boolean>(true);
+
 
     useEffect(() => {
         const popupTemplate = new PopupTemplate({
@@ -33,10 +36,14 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
             }],
         });
 
+
+
         const treeLayer = new GeoJSONLayer({
             url: "/trees.geojson",
             popupTemplate: popupTemplate,
-            outFields: ["common_name"]
+            outFields: ["common_name"],
+            copyright: "Aidan A. Donnelly",
+
         });
 
         const apiKey = import.meta.env.VITE_ARCGIS_API_KEY;
@@ -91,6 +98,8 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
                 console.error("MapView failed to load", error);
                 setError(`Failed to load map: ${error.name} - ${error.message}`);
             });
+
+
         }
 
         return () => {
@@ -120,18 +129,21 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
     }
 
     return (
-        <div
-            ref={mapRef}
-            style={{
-                width: "100%",
-                height: "100%",
-                position: "absolute",
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0
-            }}
-        />
+        <>
+            <div
+                ref={mapRef}
+                style={{
+                    width: "100%",
+                    height: "100%",
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    bottom: 0
+                }}
+            />
+
+        </>
     );
 });
 
