@@ -7,7 +7,6 @@ import Basemap from "@arcgis/core/Basemap";
 import GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import Search from "@arcgis/core/widgets/Search";
-import { CalciteLoader } from "@esri/calcite-components-react";
 
 interface MapFrameProps {
     center?: [number, number];
@@ -21,7 +20,6 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
     const mapRef = useRef<HTMLDivElement>(null);
     const viewRef = useRef<MapView | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const [layersLoading, setLayersLoading] = useState<boolean>(true);
 
 
     useEffect(() => {
@@ -32,8 +30,17 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
                 fieldInfos: [{
                     fieldName: "common_name",
                     label: "Common Name"
+                },
+                {
+                    fieldName: "scientific_name",
+                    label: "Scientific Name"
+                },
+                {
+                    fieldName: "diameter_base_height",
+                    label: "Diameter (inches)"
                 }]
             }],
+            overwriteActions: true,
         });
 
 
@@ -80,7 +87,8 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
                         buttonEnabled: false,
                         breakpoint: false,
                         position: "top-right"
-                    }
+                    },
+
 
                 }
             });
