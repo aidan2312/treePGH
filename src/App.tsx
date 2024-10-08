@@ -24,7 +24,7 @@ function App() {
     <CalciteShell>
       <CalciteNavigation slot="header">
         <CalciteNavigationLogo
-
+          thumbnail="/pgh-nobg.svg"
           slot="logo"
           heading="pghTrees"
           description="Pittsburgh in Trees"

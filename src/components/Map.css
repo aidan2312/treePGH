@@ -1,0 +1,8 @@
+.esri-view-width-xlarge .esri-popup__main-container,
+.esri-view-width-large .esri-popup__main-container,
+.esri-view-width-medium .esri-popup__main-container
+{
+  max-height: 100% !important;
+  min-width: 25% !important;
+  max-width: 25% !important;
+}

@@ -7,11 +7,29 @@ import Basemap from "@arcgis/core/Basemap";
 import GeoJSONLayer from "@arcgis/core/layers/GeoJSONLayer";
 import PopupTemplate from "@arcgis/core/PopupTemplate";
 import Search from "@arcgis/core/widgets/Search";
-
+import SimpleRenderer from "@arcgis/core/renderers/SimpleRenderer";
+import SimpleMarkerSymbol from "@arcgis/core/symbols/SimpleMarkerSymbol.js";
+import './Map.css';
 interface MapFrameProps {
     center?: [number, number];
     zoom?: number;
 }
+
+const fetchWikipediaImage = async (scientificName: string): Promise<string | null> => {
+    const formattedName = encodeURIComponent(scientificName.replace(' ', '_'));
+    const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${formattedName}&prop=pageimages&format=json&pithumbsize=300&origin=*`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+        const pages = data.query.pages;
+        const pageId = Object.keys(pages)[0];
+        return pages[pageId].thumbnail?.source || null;
+    } catch (error) {
+        console.error("Error fetching Wikipedia image:", error);
+        return null;
+    }
+};
 
 export const MapFrame: React.FC<MapFrameProps> = React.memo(({
     center = [-79.9959, 40.4406], // Pittsburgh, PA coordinates
@@ -24,32 +42,138 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
 
     useEffect(() => {
         const popupTemplate = new PopupTemplate({
-            title: "Tree Information",
-            content: [{
-                type: "fields",
-                fieldInfos: [{
-                    fieldName: "common_name",
-                    label: "Common Name"
+            title: "{common_name}",
+            content: [
+                {
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "scientific_name",
+                            label: "Scientific Name"
+                        },
+                        {
+                            fieldName: "diameter_base_height",
+                            label: "Diameter (inches)",
+                            format: {
+                                digitSeparator: true,
+                                places: 1
+                            }
+                        },
+                        {
+                            fieldName: "height",
+                            label: "Height (ft)",
+                            format: {
+                                digitSeparator: true,
+                                places: 1
+                            }
+                        },
+                        {
+                            fieldName: "condition",
+                            label: "Condition"
+                        }
+                    ]
                 },
                 {
-                    fieldName: "scientific_name",
-                    label: "Scientific Name"
+                    type: "text",
+                    text: "<b>Environmental Benefits</b>"
                 },
                 {
-                    fieldName: "diameter_base_height",
-                    label: "Diameter (inches)"
-                }]
-            }],
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "co2_benefits_totalco2_lbs",
+                            label: "Total CO2 Benefits (lbs)",
+                            format: {
+                                digitSeparator: true,
+                                places: 0
+                            }
+                        },
+                        {
+                            fieldName: "air_quality_benfits_total_lbs",
+                            label: "Total Air Quality Benefits (lbs)",
+                            format: {
+                                digitSeparator: true,
+                                places: 2
+                            }
+                        },
+                        {
+                            fieldName: "stormwater_benefits_runoff_elim",
+                            label: "Stormwater Runoff Eliminated (gal)",
+                            format: {
+                                digitSeparator: true,
+                                places: 0
+                            }
+                        }
+                    ]
+                },
+                {
+                    type: "text",
+                    text: "<b>Economic Benefits</b>"
+                },
+                {
+                    type: "fields",
+                    fieldInfos: [
+                        {
+                            fieldName: "overall_benefits_dollar_value",
+                            label: "Total Benefits ($)",
+                            format: {
+                                digitSeparator: true,
+                                places: 2
+                            }
+                        },
+                        {
+                            fieldName: "energy_benefits_electricity_dollar_value",
+                            label: "Energy Savings - Electricity ($)",
+                            format: {
+                                digitSeparator: true,
+                                places: 2
+                            }
+                        },
+                        {
+                            fieldName: "energy_benefits_gas_dollar_value",
+                            label: "Energy Savings - Gas ($)",
+                            format: {
+                                digitSeparator: true,
+                                places: 2
+                            }
+                        }
+                    ]
+                },
+                {
+                    type: "custom",
+                    creator: async function (feature: any) {
+                        const scientificName = feature.graphic.attributes.scientific_name;
+                        const imgUrl = await fetchWikipediaImage(scientificName);
+                        if (imgUrl) {
+                            return `<img src="${imgUrl}" alt="${scientificName}" style="max-width: 100%; height: auto;"><p>Image source: Wikipedia</p>`;
+                        } else {
+                            return `<p>No image available for ${scientificName}</p>`;
+                        }
+                    }
+                }
+            ],
             overwriteActions: true,
         });
 
-
-
+        const treeFillSymbol = new SimpleMarkerSymbol({
+            color: "rgba(0, 100, 0, 1)", // dark green
+            size: "12px",
+            outline: {
+                color: "rgba(0, 50, 0, 0.5)", // half-transparent darker green for outline
+                width: 5
+            }
+        });
+        const treeRenderer = new SimpleRenderer({
+            symbol: treeFillSymbol
+        })
         const treeLayer = new GeoJSONLayer({
             url: "/trees.geojson",
             popupTemplate: popupTemplate,
             outFields: ["common_name"],
             copyright: "Aidan A. Donnelly",
+
+            renderer: treeRenderer,
+
 
         });
 
@@ -86,7 +210,8 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
                     dockOptions: {
                         buttonEnabled: false,
                         breakpoint: false,
-                        position: "top-right"
+                        position: "top-right",
+
                     },
 
 

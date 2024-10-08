@@ -1,4 +1,4 @@
-import { CalciteCard, CalciteChip } from "@esri/calcite-components-react";
+import { CalciteCard, CalciteChip, CalciteLink } from "@esri/calcite-components-react";
 
 
 
@@ -33,11 +33,16 @@ export const About = () => {
                 <CalciteCard style={{ marginBottom: '1.5rem' }}>
                     <span slot="heading">Data Source</span>
                     <span slot="description">
-                        We are grateful to the Western PA Regional Data Center (WPRDC) for providing the data used in this project. WPRDC is a valuable resource for open data in the Western Pennsylvania region.
+                        Ever grateful to the Western PA Regional Data Center (WPRDC) for providing the data used in this project. WPRDC is a valuable resource for open data in the Western Pennsylvania region.
+
                     </span>
                     <div slot="footer-end">
+                        <CalciteLink href="https://wprdc" target="_blank" rel="noopener noreferrer">Learn more about WPRDC</CalciteLink>
+                    </div>
+                    <div slot="footer-start">
 
                         <CalciteChip icon="list" value={undefined}>WPRDC</CalciteChip>
+
                     </div>
                 </CalciteCard>
 
@@ -46,7 +51,7 @@ export const About = () => {
                     <span slot="description">
                         This project leverages cutting-edge mapping and UI technologies:
                         <ul style={{ listStyleType: 'disc', paddingLeft: '1.5rem', marginTop: '0.5rem' }}>
-                            <li>ArcGIS Maps SDK for JavaScript (Esri): Powers our interactive mapping capabilities</li>
+                            <li>ArcGIS Maps SDK for JavaScript (Esri): Powers the interactive mapping capabilities</li>
                             <li>Calcite Components (Esri): Provides a cohesive and user-friendly interface design</li>
                         </ul>
                     </span>
