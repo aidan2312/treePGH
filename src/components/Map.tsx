@@ -173,6 +173,10 @@ export const MapFrame: React.FC<MapFrameProps> = React.memo(({
             copyright: "Aidan A. Donnelly",
 
             renderer: treeRenderer,
+            featureReduction: {
+                type: "cluster",
+                clusterRadius: "50px",
+            }
 
 
         });
