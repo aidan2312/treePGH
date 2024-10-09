@@ -32,7 +32,7 @@ function App() {
           <Link to="/about">
             <CalciteMenuItem text='About' label="About" icon-start="information" />
           </Link>
-          <Link to="https://github.com/aidan2312" target='_blank'>
+          <Link to="https://github.com/aidan2312/treePGH" target='_blank'>
             <CalciteMenuItem text='Github' label="Github" icon-start="code-branch" />
 
 
