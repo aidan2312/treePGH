@@ -24,6 +24,8 @@ treePGH utilizes Esri's Calcite design system and the ArcGIS Maps SDK for JavaSc
 
 ## Host it yourself
 
+My .env is included for demo purposes only and the key included is a sample - I would not recommend using it.
+
 First you'll need an ArcGIS API key to access the ArcGIS Maps SDK for JavaScript.  [More about that here.]("https://developers.arcgis.com/documentation/security-and-authentication/api-key-authentication/")  If you don't have access to ArcGIS, you could swap out the ArcGIS Maps SDK components for OpenLayers or MapBox.
 
 Clone this repo:
