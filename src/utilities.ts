@@ -35,16 +35,17 @@ export const fetchDataFromWikipedia = async (
     return null;
   }
 };
+
 export function createPopupTemplate() {
   return new PopupTemplate({
-    title: "{common_name}",
+    title: "{common_nam}",
     content: [
       {
         type: "fields",
         fieldInfos: [
-          { fieldName: "scientific_name", label: "Scientific Name" },
+          { fieldName: "scientific", label: "Scientific Name" },
           {
-            fieldName: "diameter_base_height",
+            fieldName: "diameter_b",
             label: "Diameter (inches)",
             format: { digitSeparator: true, places: 1 },
           },
@@ -61,17 +62,17 @@ export function createPopupTemplate() {
         type: "fields",
         fieldInfos: [
           {
-            fieldName: "co2_benefits_totalco2_lbs",
+            fieldName: "co2_benefi",
             label: "Total CO2 Benefits (lbs)",
             format: { digitSeparator: true, places: 0 },
           },
           {
-            fieldName: "air_quality_benfits_total_lbs",
+            fieldName: "air_qualit",
             label: "Total Air Quality Benefits (lbs)",
             format: { digitSeparator: true, places: 2 },
           },
           {
-            fieldName: "stormwater_benefits_runoff_elim",
+            fieldName: "stormwater",
             label: "Stormwater Runoff Eliminated (gal)",
             format: { digitSeparator: true, places: 0 },
           },
@@ -82,17 +83,17 @@ export function createPopupTemplate() {
         type: "fields",
         fieldInfos: [
           {
-            fieldName: "overall_benefits_dollar_value",
+            fieldName: "overall_be",
             label: "Total Benefits ($)",
             format: { digitSeparator: true, places: 2 },
           },
           {
-            fieldName: "energy_benefits_electricity_dollar_value",
+            fieldName: "energy_ben",
             label: "Energy Savings - Electricity ($)",
             format: { digitSeparator: true, places: 2 },
           },
           {
-            fieldName: "energy_benefits_gas_dollar_value",
+            fieldName: "energy_b_1",
             label: "Energy Savings - Gas ($)",
             format: { digitSeparator: true, places: 2 },
           },
@@ -101,7 +102,7 @@ export function createPopupTemplate() {
       {
         type: "custom",
         creator: async function (feature: any) {
-          const scientificName = feature.graphic.attributes.scientific_name;
+          const scientificName = feature.graphic.attributes.scientific;
           const imgUrl = await fetchWikipediaImage(scientificName);
           if (imgUrl) {
             return `<img src="${imgUrl}" alt="${scientificName}" style="max-width: 100%; height: auto;"><p>Image source: Wikipedia</p>`;
@@ -113,12 +114,14 @@ export function createPopupTemplate() {
       {
         type: "custom",
         creator: async function (feature: any) {
-          const scientificName = feature.graphic.attributes.scientific_name;
+          const scientificName = feature.graphic.attributes.scientific;
           const wikipediaData = await fetchDataFromWikipedia(scientificName);
           if (wikipediaData) {
             return (
               wikipediaData +
-              `<p>Source: <a href="https://en.wikipedia.org/wiki/${scientificName}" target="_blank">Wikipedia</a></p>`
+              `<p>Source: <a href="https://en.wikipedia.org/wiki/${encodeURIComponent(
+                scientificName
+              )}" target="_blank">Wikipedia</a></p>`
             );
           } else {
             return `<p>No Wikipedia data available for ${scientificName}</p>`;
