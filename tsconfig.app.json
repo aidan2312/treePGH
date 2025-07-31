@@ -18,7 +18,11 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    /* Custom Elements support */
+    "allowJs": true
   },
-  "include": ["src"]
+  "include": ["src"],
+  "types": ["@esri/calcite-components"]
 }

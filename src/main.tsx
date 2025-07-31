@@ -4,12 +4,14 @@ import { BrowserRouter as Router } from 'react-router-dom'
 import App from './App.tsx'
 import './index.css'
 import "@esri/calcite-components/dist/calcite/calcite.css";
+import { setAssetPath } from "@esri/calcite-components";
 import { defineCustomElements } from "@esri/calcite-components/dist/loader";
 
-// Local assets
-defineCustomElements(window, {
-  resourcesUrl: "https://unpkg.com/@esri/calcite-components/dist/calcite/assets"
-});
+// Set the asset path to local assets to avoid CORS issues
+setAssetPath("/assets/");
+
+// Define the custom elements
+defineCustomElements(window);
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

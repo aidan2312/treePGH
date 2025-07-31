@@ -27,15 +27,13 @@ function App() {
         />
         <CalciteMenu slot="content-start" label='Navigation'>
           <Link to="/">
-            <CalciteMenuItem text='Home' label="Home" icon-start="map" />
+            <CalciteMenuItem text='Home' label="Home" iconStart="map" />
           </Link>
           <Link to="/about">
-            <CalciteMenuItem text='About' label="About" icon-start="information" />
+            <CalciteMenuItem text='About' label="About" iconStart="information" />
           </Link>
           <Link to="https://github.com/aidan2312/treePGH" target='_blank'>
-            <CalciteMenuItem text='Github' label="Github" icon-start="code-branch" />
-
-
+            <CalciteMenuItem text='Github' label="Github" iconStart="code-branch" />
           </Link>
         </CalciteMenu>
         {/* <CalciteNavigationUser slot="content-end" fullName="Aidan A. Donnelly" thumbnail="" label='User'>
