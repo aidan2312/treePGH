@@ -16,7 +16,7 @@ const TreeFilter: React.FC<TreeFilterProps> = ({ treeLayer }) => {
   useEffect(() => {
     if (treeLayer) {
       treeLayer.definitionExpression = filterVacant
-        ? "LOWER(common_name) NOT LIKE '%vacant%'"
+        ? "LOWER(common_nam) NOT LIKE '%vacant%'"
         : "";
       console.log("Filter applied:", filterVacant);
       console.log("Layer definition expression:", treeLayer.definitionExpression);
