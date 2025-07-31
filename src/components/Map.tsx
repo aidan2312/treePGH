@@ -54,7 +54,7 @@ export const MapFrame: React.FC<MapFrameProps> = ({
         });
 
         const treeLayer = new FeatureLayer({
-            url: "https://services7.arcgis.com/oGhfmaBkobkMoO6l/arcgis/rest/services/trees/FeatureServer/0",
+            url: "https://services9.arcgis.com/IdGOTokL4xNwFJF6/arcgis/rest/services/trees/FeatureServer/0",
             popupTemplate: popupTemplate,
             copyright: "Aidan A. Donnelly",
             renderer: treeRenderer,
